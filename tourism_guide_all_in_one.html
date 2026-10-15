@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Tourism Guide - jQuery Lab (Ex.07)</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+  body{font-family:Arial,sans-serif;margin:0;background:#fbf6ea;color:#12343b}
+  header{background:#12343b;color:#fbf6ea;text-align:center;padding:14px;font-size:1.4rem;font-family:Georgia,serif}
+  nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:12px;background:#e9dfc6}
+  nav button{padding:9px 16px;border:1px solid #12343b;background:#fff;color:#12343b;border-radius:4px;cursor:pointer}
+  nav button.active,nav button:hover{background:#12343b;color:#fff}
+  .panel{display:none;max-width:760px;margin:0 auto;padding:16px;text-align:center}
+  h2{color:#0b6e6e;font-family:Georgia,serif}
+  input{padding:7px;border:1px solid #12343b;border-radius:4px;box-sizing:border-box}
+  .pct input{width:80px;text-align:center}
+  .row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:12px}
+  .go{background:#12343b;color:#fff;border:0;padding:11px 24px;font-size:1rem;border-radius:4px;cursor:pointer;margin:12px}
+  .go:hover{background:#0b6e6e}
+  /* Q1 */
+  #out{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:20px}
+  .box{width:120px;padding:14px 8px;color:#fff;border-radius:6px}
+  .box b{display:block;font-size:1.2rem;margin-top:6px}
+  /* Q2 */
+  .spots{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+  .spot{width:150px;font-size:.85rem}
+  .pic{height:90px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;margin-bottom:6px}
+  .bookform{max-width:520px;margin:0 auto;text-align:left}
+  .bookform label{display:block;font-weight:bold;font-size:.85rem;color:#1a4fa0;margin-top:10px}
+  .bookform input{width:100%;color:#b3261e;font-weight:bold}
+  #bill{max-width:520px;margin:10px auto;border-top:2px solid #1a4fa0}
+  #bill h3{color:#2e7d32}
+  .line{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #aaa}
+  .total{display:flex;margin-top:12px;font-size:1.2rem;font-weight:bold}
+  .total .l{background:#2e9e4a;color:#fff;padding:8px;flex:1}
+  .total .r{color:#d32f2f;padding:8px;flex:1;text-align:left}
+  /* Q3 */
+  #stage{position:relative;width:340px;height:210px;margin:30px auto 10px}
+  #glass{position:absolute;left:100px;top:20px;width:130px;height:55px;background:#4caf50;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}
+  #body{position:absolute;left:50px;top:75px;width:240px;height:50px;background:#84e22d;border-radius:4px}
+  .tyre{position:absolute;border-radius:50%;background:#141a4a;transition:all .25s}
+  #t1{left:85px} #t2{left:205px}
+  .bar button{padding:8px 14px;margin:4px;border:1px solid #12343b;background:#fff;color:#12343b;border-radius:4px;cursor:pointer}
+  .bar button:hover{background:#12343b;color:#fff}
+</style>
+</head>
+<body>
+<header>Local Tourism Guide</header>
+<nav>
+  <button class="tab active" data-p="#p1">1. Trip Budget Planner</button>
+  <button class="tab" data-p="#p2">2. Tour Package Booking</button>
+  <button class="tab" data-p="#p3">3. Tour Vehicle Workshop</button>
+</nav>
+
+<!-- Q1 -->
+<div class="panel" id="p1" style="display:block">
+  <h2>Trip Budget Planner</h2>
+  <p>Enter the amount you want to manage for your trip (Rs.)</p>
+  <input type="text" id="amount" placeholder="15000" style="width:130px;text-align:center">
+  <p>How would you like to divide your trip money?</p>
+  <div class="row pct">
+    <label>Stay &amp; Hotel(%): <input type="text" id="stay"></label>
+    <label>Food(%): <input type="text" id="food"></label>
+    <label>Local Travel(%): <input type="text" id="travel"></label>
+    <label>Shopping(%): <input type="text" id="shop"></label>
+  </div>
+  <button class="go" id="evalBtn">Evaluate My Trip Budget</button>
+  <div id="out"></div>
+</div>
+
+<!-- Q2 -->
+<div class="panel" id="p2">
+  <h2>Tour Package Booking</h2>
+  <div class="spots">
+    <div class="spot"><div class="pic" style="background:#f3d9a4">&#127984;</div>Heritage Fort Tour - Rs. 300</div>
+    <div class="spot"><div class="pic" style="background:#bfe3ec">&#127958;</div>Beach Day Trip - Rs. 200</div>
+    <div class="spot"><div class="pic" style="background:#c5e2b9">&#9968;</div>Hill Station Trek - Rs. 250</div>
+    <div class="spot"><div class="pic" style="background:#e8cfa8">&#129421;</div>Wildlife Safari - Rs. 350</div>
+  </div>
+  <h2 style="color:#1a4fa0">Book Your Tour</h2>
+  <div class="bookform">
+    <label>Heritage Fort Tour (Persons)</label><input type="number" min="0" id="q1" value="0">
+    <label>Beach Day Trip (Persons)</label><input type="number" min="0" id="q2" value="0">
+    <label>Hill Station Trek (Persons)</label><input type="number" min="0" id="q3" value="0">
+    <label>Wildlife Safari (Persons)</label><input type="number" min="0" id="q4" value="0">
+  </div>
+  <button class="go" id="orderBtn" style="background:#1a73e8">Place Booking</button>
+  <div id="bill"></div>
+</div>
+
+<!-- Q3 -->
+<div class="panel" id="p3">
+  <h2>Tour Vehicle Workshop</h2>
+  <p>Customise the safari jeep for your sightseeing trips.</p>
+  <div id="stage">
+    <div id="glass"></div><div id="body"></div>
+    <div class="tyre" id="t1"></div><div class="tyre" id="t2"></div>
+  </div>
+  <div class="bar">
+    <button id="glassBtn">Change Glass Color</button>
+    <button id="bodyBtn">Change Body Color</button>
+    <button id="inc">Tyre Size Increase</button>
+    <button id="dec">Tyre Size Decrease</button>
+    <button id="reset">Reset</button>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+  // Tabs
+  $('.tab').click(function(){
+    $('.tab').removeClass('active'); $(this).addClass('active');
+    $('.panel').hide(); $($(this).data('p')).fadeIn(200);
+  });
+
+  // Q1: Budget
+  $('#evalBtn').click(function(){
+    let amount = parseFloat($('#amount').val());
+    let p = ['#stay','#food','#travel','#shop'].map(id => parseFloat($(id).val()));
+    if (isNaN(amount) || amount <= 0 || p.some(isNaN)) { alert("Please enter the amount and all four percentage values."); return; }
+    let total = p.reduce((a,b)=>a+b, 0);
+    if (total !== 100) { alert("Cannot divide the amount: percentages add up to " + total + "%. They must total 100%."); return; }
+    let names = ["Stay & Hotel","Food","Local Travel","Shopping"], colors = ["#0b6e6e","#2e7d32","#1a4fa0","#d6455d"];
+    $('#out').empty();
+    names.forEach((n,i) => $('#out').append('<div class="box" style="background:'+colors[i]+'">'+n+'<b>Rs.'+(amount*p[i]/100).toFixed(0)+'</b></div>'));
+  });
+
+  // Q2: Booking
+  const tours = [
+    {name:"Heritage Fort Tour", price:300, id:"#q1"},
+    {name:"Beach Day Trip", price:200, id:"#q2"},
+    {name:"Hill Station Trek", price:250, id:"#q3"},
+    {name:"Wildlife Safari", price:350, id:"#q4"}
+  ];
+  $('#orderBtn').click(function(){
+    let total = 0, html = '<h3>Booking Bill</h3>';
+    tours.forEach(function(t){
+      let q = parseInt($(t.id).val()) || 0;
+      if (q > 0) { total += q*t.price; html += '<div class="line"><span>'+t.name+' ('+q+' x Rs.'+t.price+')</span><span>Rs.'+(q*t.price)+'</span></div>'; }
+    });
+    if (total === 0) { alert("Please enter at least one person for a tour."); return; }
+    html += '<div class="total"><div class="l">Total Price</div><div class="r">Rs.'+total+'</div></div>';
+    $('#bill').html(html);
+  });
+
+  // Q3: Vehicle
+  const glassColors = ["#4caf50","#1e88e5","#212121","#90a4ae"];
+  const bodyColors  = ["#84e22d","#e53935","#fdd835","#8e24aa","#ff7043"];
+  const START = 50, STEP = 10, MIN = 30, MAX = 90;
+  let gi = 0, bi = 0, size = START;
+  function setTyres(){ $('.tyre').css({width:size+'px', height:size+'px', top:(120 - size/2)+'px'}); }
+  setTyres();
+  $('#glassBtn').click(function(){ gi=(gi+1)%glassColors.length; $('#glass').css('background', glassColors[gi]); });
+  $('#bodyBtn').click(function(){ bi=(bi+1)%bodyColors.length; $('#body').css('background', bodyColors[bi]); });
+  $('#inc').click(function(){ if(size<MAX){size+=STEP;setTyres();} else alert("Maximum tyre size reached."); });
+  $('#dec').click(function(){ if(size>MIN){size-=STEP;setTyres();} else alert("Minimum tyre size reached."); });
+  $('#reset').click(function(){
+    gi=0; bi=0; size=START;
+    $('#glass').css('background', glassColors[0]); $('#body').css('background', bodyColors[0]); setTyres();
+  });
+});
+</script>
+</body>
+</html>
